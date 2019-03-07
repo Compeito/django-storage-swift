@@ -6,7 +6,6 @@ from datetime import datetime
 from functools import wraps
 from io import BytesIO, UnsupportedOperation
 from time import time
-import magic
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.core.files import File
@@ -265,6 +264,7 @@ class SwiftStorage(Storage):
             pass
 
         if self.content_type_from_fd:
+            import magic
             content_type = magic.from_buffer(content.read(1024), mime=True)
             # Go back to the beginning of the file
             content.seek(0)
