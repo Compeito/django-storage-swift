@@ -2,6 +2,7 @@ import gzip
 import mimetypes
 import os
 import re
+import posixpath
 from datetime import datetime
 from functools import wraps
 from io import BytesIO, UnsupportedOperation
@@ -340,6 +341,8 @@ class SwiftStorage(Storage):
         Returns a filename that's free on the target storage system, and
         available for new content to be written to.
         """
+        name = posixpath.normpath(name).replace('\\', '/')
+        
         if not self.auto_overwrite:
             if max_length is None:
                 name = super(SwiftStorage, self).get_available_name(name)
